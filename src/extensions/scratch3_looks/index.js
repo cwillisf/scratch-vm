@@ -1,6 +1,11 @@
-const Cast = require('../util/cast');
-const Clone = require('../util/clone');
-const RenderedTarget = require('../sprites/rendered-target');
+const formatMessage = require('format-message');
+
+const ArgumentType = require('../../extension-support/argument-type');
+const BlockType = require('../../extension-support/block-type');
+const Cast = require('../../util/cast');
+const Clone = require('../../util/clone');
+const RenderedTarget = require('../../sprites/rendered-target');
+const ReporterScope = require('../../extension-support/reporter-scope');
 
 /**
  * @typedef {object} BubbleState - the bubble state associated with a particular target.
@@ -54,6 +59,326 @@ class Scratch3LooksBlocks {
      */
     static get STATE_KEY () {
         return 'Scratch.looks';
+    }
+
+    /**
+     * @returns {ExtensionMetadata} metadata for this extension and its blocks.
+     */
+    getInfo () {
+
+        return {
+            id: 'looks',
+            name: formatMessage({
+                id: 'looks',
+                default: 'Looks Ext'
+            }),
+            blocks: [
+                {
+                    opcode: 'say',
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        id: 'looks.say',
+                        default: 'say [MESSAGE]'
+                    }),
+                    arguments: {
+                        MESSAGE: {
+                            type: ArgumentType.STRING,
+                            defaultValue: formatMessage({
+                                id: 'looks.sayDefault',
+                                default: 'Hello!'
+                            })
+                        }
+                    }
+                },
+                {
+                    opcode: 'sayforsecs',
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        id: 'looks.sayforsecs',
+                        default: 'say [MESSAGE] for [SECS] seconds'
+                    }),
+                    arguments: {
+                        MESSAGE: {
+                            type: ArgumentType.STRING,
+                            defaultValue: formatMessage({
+                                id: 'looks.sayDefault',
+                                default: 'Hello!'
+                            })
+                        },
+                        SECS: {
+                            type: ArgumentType.NUMBER,
+                            defaultValue: 2
+                        }
+                    }
+                },
+                {
+                    opcode: 'think',
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        id: 'looks.think',
+                        default: 'think [MESSAGE]'
+                    }),
+                    arguments: {
+                        MESSAGE: {
+                            type: ArgumentType.STRING,
+                            defaultValue: formatMessage({
+                                id: 'looks.thinkDefault',
+                                default: 'Hmm...'
+                            })
+                        }
+                    }
+                },
+                {
+                    opcode: 'sayforsecs',
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        id: 'looks.thinkforsecs',
+                        default: 'think [MESSAGE] for [SECS] seconds'
+                    }),
+                    arguments: {
+                        MESSAGE: {
+                            type: ArgumentType.STRING,
+                            defaultValue: formatMessage({
+                                id: 'looks.thinkDefault',
+                                default: 'Hmm...'
+                            })
+                        },
+                        SECS: {
+                            type: ArgumentType.NUMBER,
+                            defaultValue: 2
+                        }
+                    }
+                },
+                '---',
+                {
+                    opcode: 'switchcostumeto',
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        id: 'looks.switchcostumeto',
+                        default: 'switch costume to [COSTUME]'
+                    }),
+                    arguments: {
+                        COSTUME: {
+                            type: ArgumentType.STRING,
+                            menu: 'costumes'
+                        }
+                    }
+                },
+                {
+                    opcode: 'nextcostume',
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        id: 'looks.nextcostume',
+                        default: 'next costume'
+                    })
+                },
+                {
+                    opcode: 'switchbackdropto',
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        id: 'looks.switchbackdropto',
+                        default: 'switch backdrop to [BACKDROP]'
+                    }),
+                    arguments: {
+                        BACKDROP: {
+                            type: ArgumentType.STRING,
+                            menu: 'backdrops'
+                        }
+                    }
+                },
+                {
+                    opcode: 'switchbackdroptoandwait',
+                    blockType: BlockType.COMMAND,
+                    hideFromPalette: true,
+                    text: formatMessage({
+                        id: 'looks.switchbackdroptoandwait',
+                        default: 'switch backdrop to [BACKDROP] and wait'
+                    }),
+                    arguments: {
+                        BACKDROP: {
+                            type: ArgumentType.STRING,
+                            menu: 'backdrops'
+                        }
+                    }
+                },
+                {
+                    opcode: 'nextbackdrop',
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        id: 'looks.nextbackdrop',
+                        default: 'next backdrop'
+                    })
+                },
+                '---',
+                {
+                    opcode: 'changesizeby',
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        id: 'looks.changesizeby',
+                        default: 'change size by [CHANGE]'
+                    }),
+                    arguments: {
+                        CHANGE: {
+                            type: ArgumentType.NUMBER,
+                            defaultValue: 10
+                        }
+                    }
+                },
+                {
+                    opcode: 'setsizeto',
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        id: 'looks.setsizeto',
+                        default: 'set size to [SIZE]'
+                    }),
+                    arguments: {
+                        SIZE: {
+                            type: ArgumentType.NUMBER,
+                            defaultValue: 100
+                        }
+                    }
+                },
+                '---',
+                {
+                    opcode: 'changeeffectby',
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        id: 'looks.changeeffectby',
+                        default: 'change [EFFECT] effect by [CHANGE]',
+                        menu: 'effects'
+                    }),
+                    arguments: {
+                        EFFECT: {
+                            type: ArgumentType.STRING,
+                            menu: 'effects'
+                        },
+                        CHANGE: {
+                            type: ArgumentType.NUMBER,
+                            defaultValue: 25
+                        }
+                    }
+                },
+                {
+                    opcode: 'seteffectto',
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        id: 'looks.seteffectto',
+                        default: 'set [EFFECT] effect to [VALUE]',
+                        menu: 'effects'
+                    }),
+                    arguments: {
+                        EFFECT: {
+                            type: ArgumentType.STRING,
+                            menu: 'effects'
+                        },
+                        VALUE: {
+                            type: ArgumentType.NUMBER,
+                            defaultValue: 0
+                        }
+                    }
+                },
+                {
+                    opcode: 'cleargraphiceffects',
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        id: 'looks.cleargraphiceffects',
+                        default: 'clear graphic effects'
+                    })
+                },
+                '---',
+                {
+                    opcode: 'show',
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        id: 'looks.show',
+                        default: 'show'
+                    })
+                },
+                {
+                    opcode: 'hide',
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        id: 'looks.hide',
+                        default: 'hide'
+                    })
+                },
+                '---',
+                {
+                    opcode: 'gotofrontback',
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        id: 'looks.gotofrontback',
+                        default: 'go to [FRONT_BACK]'
+                    }),
+                    arguments: {
+                        FRONT_BACK: {
+                            type: ArgumentType.STRING,
+                            menu: 'frontOrBack'
+                        }
+                    }
+                },
+                {
+                    opcode: 'goforwardbackwardlayers',
+                    blockType: BlockType.COMMAND,
+                    text: formatMessage({
+                        id: 'looks.goforwardbackwardlayers',
+                        default: 'go [FORWARD_BACKWARD] [NUM] layers'
+                    }),
+                    arguments: {
+                        FORWARD_BACKWARD: {
+                            type: ArgumentType.STRING,
+                            menu: 'forwardOrBackward'
+                        },
+                        NUM: {
+                            type: ArgumentType.NUMBER,
+                            defaultValue: 1
+                        }
+                    }
+                },
+                '---',
+                {
+                    opcode: 'size',
+                    blockType: BlockType.REPORTER,
+                    reporterScope: ReporterScope.SPRITE,
+                    text: formatMessage({
+                        id: 'looks.size',
+                        default: 'size'
+                    })
+                },
+                {
+                    opcode: 'costumenumbername',
+                    blockType: BlockType.REPORTER,
+                    reporterScope: ReporterScope.SPRITE,
+                    text: formatMessage({
+                        id: 'looks.costumenumbername',
+                        default: 'costume [NUMBER_NAME]'
+                    }),
+                    arguments: {
+                        NUMBER_NAME: {
+                            type: ArgumentType.STRING,
+                            menu: 'numberOrName'
+                        }
+                    }
+                },
+                {
+                    opcode: 'backdropnumbername',
+                    blockType: BlockType.REPORTER,
+                    text: formatMessage({
+                        id: 'looks.backdropnumbername',
+                        default: 'backdrop [NUMBER_NAME]'
+                    }),
+                    arguments: {
+                        NUMBER_NAME: {
+                            type: ArgumentType.STRING,
+                            menu: 'numberOrName'
+                        }
+                    }
+                }
+            ],
+            menus: {
+                costumes: 'getCostumes'
+            }
+        };
     }
 
     /**
