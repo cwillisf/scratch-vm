@@ -21,6 +21,15 @@ const {serializeSounds, serializeCostumes} = require('./serialization/serialize-
 const RESERVED_NAMES = ['_mouse_', '_stage_', '_edge_', '_myself_', '_random_'];
 
 /**
+ * On startup, the VM will instruct the Extension Manager to load each of the core extensions.
+ * @type {Array.<string>}
+ */
+const coreExtensionIDs = [
+    'looks'
+];
+
+
+/**
  * Handles connections between blocks, stage, and extensions.
  * @constructor
  */
@@ -103,7 +112,9 @@ class VirtualMachine extends EventEmitter {
      * Start running the VM - do this before anything else.
      */
     start () {
-        this.runtime.start();
+        this._loadCoreExtensions().then(() => {
+            this.runtime.start();
+        });
     }
 
     /**
@@ -914,6 +925,18 @@ class VirtualMachine extends EventEmitter {
         } else {
             this.editingTarget.postSpriteInfo(data);
         }
+    }
+
+    /**
+     * Load all core extensions.
+     * @returns {Promise} a Promise.all() across all core extensions' registrations.
+     * @private
+     */
+    _loadCoreExtensions () {
+        return Promise.all(
+            coreExtensionIDs
+                .map(extensionID => this.extensionManager.loadExtensionURL(extensionID))
+        );
     }
 }
 
