@@ -129,7 +129,7 @@ class Scratch3LooksBlocks {
                     }
                 },
                 {
-                    opcode: 'sayforsecs',
+                    opcode: 'thinkforsecs',
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
                         id: 'looks.thinkforsecs',
@@ -152,6 +152,7 @@ class Scratch3LooksBlocks {
                 '---',
                 {
                     opcode: 'switchcostumeto',
+                    func: 'switchCostume',
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
                         id: 'looks.switchcostumeto',
@@ -166,6 +167,7 @@ class Scratch3LooksBlocks {
                 },
                 {
                     opcode: 'nextcostume',
+                    func: 'nextCostume',
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
                         id: 'looks.nextcostume',
@@ -174,6 +176,7 @@ class Scratch3LooksBlocks {
                 },
                 {
                     opcode: 'switchbackdropto',
+                    func: 'switchBackdrop',
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
                         id: 'looks.switchbackdropto',
@@ -188,6 +191,7 @@ class Scratch3LooksBlocks {
                 },
                 {
                     opcode: 'switchbackdroptoandwait',
+                    func: 'switchBackdropAndWait',
                     blockType: BlockType.COMMAND,
                     hideFromPalette: true,
                     text: formatMessage({
@@ -203,6 +207,7 @@ class Scratch3LooksBlocks {
                 },
                 {
                     opcode: 'nextbackdrop',
+                    func: 'nextBackdrop',
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
                         id: 'looks.nextbackdrop',
@@ -212,6 +217,7 @@ class Scratch3LooksBlocks {
                 '---',
                 {
                     opcode: 'changesizeby',
+                    func: 'changeSize',
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
                         id: 'looks.changesizeby',
@@ -226,6 +232,7 @@ class Scratch3LooksBlocks {
                 },
                 {
                     opcode: 'setsizeto',
+                    func: 'setSize',
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
                         id: 'looks.setsizeto',
@@ -241,6 +248,7 @@ class Scratch3LooksBlocks {
                 '---',
                 {
                     opcode: 'changeeffectby',
+                    func: 'changeEffect',
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
                         id: 'looks.changeeffectby',
@@ -260,6 +268,7 @@ class Scratch3LooksBlocks {
                 },
                 {
                     opcode: 'seteffectto',
+                    func: 'setEffect',
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
                         id: 'looks.seteffectto',
@@ -279,6 +288,7 @@ class Scratch3LooksBlocks {
                 },
                 {
                     opcode: 'cleargraphiceffects',
+                    func: 'clearEffects',
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
                         id: 'looks.cleargraphiceffects',
@@ -305,6 +315,7 @@ class Scratch3LooksBlocks {
                 '---',
                 {
                     opcode: 'gotofrontback',
+                    func: 'goToFrontBack',
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
                         id: 'looks.gotofrontback',
@@ -319,6 +330,7 @@ class Scratch3LooksBlocks {
                 },
                 {
                     opcode: 'goforwardbackwardlayers',
+                    func: 'goForwardBackwardLayers',
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
                         id: 'looks.goforwardbackwardlayers',
@@ -338,6 +350,7 @@ class Scratch3LooksBlocks {
                 '---',
                 {
                     opcode: 'size',
+                    func: 'getSize',
                     blockType: BlockType.REPORTER,
                     reporterScope: ReporterScope.SPRITE,
                     text: formatMessage({
@@ -347,6 +360,7 @@ class Scratch3LooksBlocks {
                 },
                 {
                     opcode: 'costumenumbername',
+                    func: 'getCostumeNumberName',
                     blockType: BlockType.REPORTER,
                     reporterScope: ReporterScope.SPRITE,
                     text: formatMessage({
@@ -362,6 +376,7 @@ class Scratch3LooksBlocks {
                 },
                 {
                     opcode: 'backdropnumbername',
+                    func: 'getBackdropNumberName',
                     blockType: BlockType.REPORTER,
                     text: formatMessage({
                         id: 'looks.backdropnumbername',
@@ -379,6 +394,14 @@ class Scratch3LooksBlocks {
                 costumes: 'getCostumes'
             }
         };
+    }
+
+    getCostumes (targetId) {
+        const target = this.runtime.getTargetById(targetId);
+        if (target && target.getCostumes) {
+            const costumes = target.getCostumes();
+            return costumes.map(costume => [costume.name]);
+        }
     }
 
     /**
