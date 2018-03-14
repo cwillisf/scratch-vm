@@ -8,6 +8,32 @@ const RenderedTarget = require('../../sprites/rendered-target');
 const ReporterScope = require('../../extension-support/reporter-scope');
 
 /**
+ * Array of each effect's English name and internal ID.
+ * @type {Array.<{name: string, id: number}>}
+ */
+const EFFECTS = [
+    {text: 'color', value: 'COLOR'},
+    {text: 'fisheye', value: 'FISHEYE'},
+    {text: 'whirl', value: 'WHIRL'},
+    {text: 'pixelate', value: 'PIXELATE'},
+    {text: 'mosaic', value: 'MOSAIC'},
+    {text: 'brightness', value: 'BRIGHTNESS'},
+    {text: 'ghost', value: 'GHOST'}
+];
+
+/**
+ * Fetch the name of each costume in the given target.
+ * @param {?RenderedTarget} target - the target to inspect.
+ * @returns {Array.<[string]>} An array of single-element arrays, each of which contains a single costume's name.
+ */
+const getCostumeNamesForMenu = function (target) {
+    if (target && target.getCostumes) {
+        const costumes = target.getCostumes();
+        return costumes.map(costume => [costume.name]);
+    }
+};
+
+/**
  * @typedef {object} BubbleState - the bubble state associated with a particular target.
  * @property {Boolean} onSpriteRight - tracks whether the bubble is right or left of the sprite.
  * @property {?int} drawableId - the ID of the associated bubble Drawable, null if none.
@@ -252,13 +278,13 @@ class Scratch3LooksBlocks {
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
                         id: 'looks.changeeffectby',
-                        default: 'change [EFFECT] effect by [CHANGE]',
-                        menu: 'effects'
+                        default: 'change [EFFECT] effect by [CHANGE]'
                     }),
                     arguments: {
                         EFFECT: {
                             type: ArgumentType.STRING,
-                            menu: 'effects'
+                            menu: 'effects',
+                            defaultValue: EFFECTS[0].value
                         },
                         CHANGE: {
                             type: ArgumentType.NUMBER,
@@ -272,13 +298,13 @@ class Scratch3LooksBlocks {
                     blockType: BlockType.COMMAND,
                     text: formatMessage({
                         id: 'looks.seteffectto',
-                        default: 'set [EFFECT] effect to [VALUE]',
-                        menu: 'effects'
+                        default: 'set [EFFECT] effect to [VALUE]'
                     }),
                     arguments: {
                         EFFECT: {
                             type: ArgumentType.STRING,
-                            menu: 'effects'
+                            menu: 'effects',
+                            defaultValue: EFFECTS[0].value
                         },
                         VALUE: {
                             type: ArgumentType.NUMBER,
@@ -324,7 +350,8 @@ class Scratch3LooksBlocks {
                     arguments: {
                         FRONT_BACK: {
                             type: ArgumentType.STRING,
-                            menu: 'frontOrBack'
+                            menu: 'frontOrBack',
+                            defaultValue: 'front'
                         }
                     }
                 },
@@ -339,7 +366,8 @@ class Scratch3LooksBlocks {
                     arguments: {
                         FORWARD_BACKWARD: {
                             type: ArgumentType.STRING,
-                            menu: 'forwardOrBackward'
+                            menu: 'forwardOrBackward',
+                            defaultValue: 'forward'
                         },
                         NUM: {
                             type: ArgumentType.NUMBER,
@@ -370,7 +398,8 @@ class Scratch3LooksBlocks {
                     arguments: {
                         NUMBER_NAME: {
                             type: ArgumentType.STRING,
-                            menu: 'numberOrName'
+                            menu: 'numberOrName',
+                            defaultValue: 'number'
                         }
                     }
                 },
@@ -385,23 +414,75 @@ class Scratch3LooksBlocks {
                     arguments: {
                         NUMBER_NAME: {
                             type: ArgumentType.STRING,
-                            menu: 'numberOrName'
+                            menu: 'numberOrName',
+                            defaultValue: 'number'
                         }
                     }
                 }
             ],
             menus: {
-                costumes: 'getCostumes'
+                backdrops: 'getBackdropsMenu',
+                costumes: 'getCostumesMenu',
+                effects: this.getEffectsMenu(),
+                frontOrBack: this.getFrontOrBackMenu(),
+                forwardOrBackward: this.getForwardOrBackwardMenu(),
+                numberOrName: this.getNumberOrNameMenu()
             }
         };
     }
 
-    getCostumes (targetId) {
+    getBackdropsMenu () {
+        const stage = this.runtime.getTargetForStage();
+        return getCostumeNamesForMenu(stage);
+    }
+
+    getCostumesMenu (targetId) {
         const target = this.runtime.getTargetById(targetId);
-        if (target && target.getCostumes) {
-            const costumes = target.getCostumes();
-            return costumes.map(costume => [costume.name]);
-        }
+        return getCostumeNamesForMenu(target);
+    }
+
+    getEffectsMenu () {
+        return EFFECTS.map(effect => ({
+            text: formatMessage({
+                id: `looks.effect_${effect.text}`,
+                default: effect.text,
+                description: `label for graphical effect: ${effect.text}`
+            }),
+            value: effect.value
+        }));
+    }
+
+    getFrontOrBackMenu () {
+        return ['front', 'back'].map(word => ({
+            text: formatMessage({
+                id: `looks.${word}`,
+                default: word,
+                description: `label for "${word}" menu item on "go to front/back" block`
+            }),
+            value: word
+        }));
+    }
+
+    getForwardOrBackwardMenu () {
+        return ['forward', 'backward'].map(word => ({
+            text: formatMessage({
+                id: `looks.${word}`,
+                default: word,
+                description: `label for "${word}" menu item on "go forward/backward layers" block`
+            }),
+            value: word
+        }));
+    }
+
+    getNumberOrNameMenu () {
+        return ['number', 'name'].map(word => ({
+            text: formatMessage({
+                id: `looks.${word}`,
+                default: word,
+                description: `label for "${word}" menu item on "backdrop number/name" and "costume number/name" blocks`
+            }),
+            value: word
+        }));
     }
 
     /**
