@@ -207,7 +207,7 @@ const specMap = {
         ]
     },
     'say:duration:elapsed:from:': {
-        opcode: 'looks_sayforsecs',
+        opcode: 'looks.sayforsecs',
         argMap: [
             {
                 type: 'input',
@@ -222,7 +222,7 @@ const specMap = {
         ]
     },
     'say:': {
-        opcode: 'looks_say',
+        opcode: 'looks.say',
         argMap: [
             {
                 type: 'input',
@@ -232,7 +232,7 @@ const specMap = {
         ]
     },
     'think:duration:elapsed:from:': {
-        opcode: 'looks_thinkforsecs',
+        opcode: 'looks.thinkforsecs',
         argMap: [
             {
                 type: 'input',
@@ -247,7 +247,7 @@ const specMap = {
         ]
     },
     'think:': {
-        opcode: 'looks_think',
+        opcode: 'looks.think',
         argMap: [
             {
                 type: 'input',
@@ -257,42 +257,42 @@ const specMap = {
         ]
     },
     'show': {
-        opcode: 'looks_show',
+        opcode: 'looks.show',
         argMap: [
         ]
     },
     'hide': {
-        opcode: 'looks_hide',
+        opcode: 'looks.hide',
         argMap: [
         ]
     },
     'lookLike:': {
-        opcode: 'looks_switchcostumeto',
+        opcode: 'looks.switchcostumeto',
         argMap: [
             {
                 type: 'input',
-                inputOp: 'looks_costume',
+                inputOp: 'looks.menu.costume',
                 inputName: 'COSTUME'
             }
         ]
     },
     'nextCostume': {
-        opcode: 'looks_nextcostume',
+        opcode: 'looks.nextcostume',
         argMap: [
         ]
     },
     'startScene': {
-        opcode: 'looks_switchbackdropto',
+        opcode: 'looks.switchbackdropto',
         argMap: [
             {
                 type: 'input',
-                inputOp: 'looks_backdrops',
+                inputOp: 'looks.menu.backdrops',
                 inputName: 'BACKDROP'
             }
         ]
     },
     'changeGraphicEffect:by:': {
-        opcode: 'looks_changeeffectby',
+        opcode: 'looks.changeeffectby',
         argMap: [
             {
                 type: 'field',
@@ -306,7 +306,7 @@ const specMap = {
         ]
     },
     'setGraphicEffect:to:': {
-        opcode: 'looks_seteffectto',
+        opcode: 'looks.seteffectto',
         argMap: [
             {
                 type: 'field',
@@ -320,12 +320,12 @@ const specMap = {
         ]
     },
     'filterReset': {
-        opcode: 'looks_cleargraphiceffects',
+        opcode: 'looks.cleargraphiceffects',
         argMap: [
         ]
     },
     'changeSizeBy:': {
-        opcode: 'looks_changesizeby',
+        opcode: 'looks.changesizeby',
         argMap: [
             {
                 type: 'input',
@@ -335,7 +335,7 @@ const specMap = {
         ]
     },
     'setSizeTo:': {
-        opcode: 'looks_setsizeto',
+        opcode: 'looks.setsizeto',
         argMap: [
             {
                 type: 'input',
@@ -345,12 +345,12 @@ const specMap = {
         ]
     },
     'comeToFront': {
-        opcode: 'looks_gotofrontback',
+        opcode: 'looks.gotofrontback',
         argMap: [
         ]
     },
     'goBackByLayers:': {
-        opcode: 'looks_goforwardbackwardlayers',
+        opcode: 'looks.goforwardbackwardlayers',
         argMap: [
             {
                 type: 'input',
@@ -360,37 +360,37 @@ const specMap = {
         ]
     },
     'costumeIndex': {
-        opcode: 'looks_costumenumbername',
+        opcode: 'looks.costumenumbername',
         argMap: [
         ]
     },
     'sceneName': {
-        opcode: 'looks_backdropnumbername',
+        opcode: 'looks.backdropnumbername',
         argMap: [
         ]
     },
     'scale': {
-        opcode: 'looks_size',
+        opcode: 'looks.size',
         argMap: [
         ]
     },
     'startSceneAndWait': {
-        opcode: 'looks_switchbackdroptoandwait',
+        opcode: 'looks.switchbackdroptoandwait',
         argMap: [
             {
                 type: 'input',
-                inputOp: 'looks_backdrops',
+                inputOp: 'looks.menu.backdrops',
                 inputName: 'BACKDROP'
             }
         ]
     },
     'nextScene': {
-        opcode: 'looks_nextbackdrop',
+        opcode: 'looks.nextbackdrop',
         argMap: [
         ]
     },
     'backgroundIndex': {
-        opcode: 'looks_backdropnumbername',
+        opcode: 'looks.backdropnumbername',
         argMap: [
         ]
     },
