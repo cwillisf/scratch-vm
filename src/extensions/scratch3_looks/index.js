@@ -380,7 +380,7 @@ class Scratch3LooksBlocks {
                     opcode: 'size',
                     func: 'getSize',
                     blockType: BlockType.REPORTER,
-                    reporterScope: ReporterScope.SPRITE,
+                    reporterScope: ReporterScope.TARGET,
                     text: formatMessage({
                         id: 'looks.size',
                         default: 'size'
@@ -390,7 +390,7 @@ class Scratch3LooksBlocks {
                     opcode: 'costumenumbername',
                     func: 'getCostumeNumberName',
                     blockType: BlockType.REPORTER,
-                    reporterScope: ReporterScope.SPRITE,
+                    reporterScope: ReporterScope.TARGET,
                     text: formatMessage({
                         id: 'looks.costumenumbername',
                         default: 'costume [NUMBER_NAME]'
