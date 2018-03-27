@@ -25,7 +25,7 @@ const CORE_EXTENSIONS = [
     // 'looks',
     // 'sound',
     // 'events',
-    // 'control',
+    'control',
     // 'sensing',
     // 'operators',
     // 'variables',

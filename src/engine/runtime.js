@@ -20,7 +20,6 @@ const Mouse = require('../io/mouse');
 const MouseWheel = require('../io/mouseWheel');
 
 const defaultBlockPackages = {
-    scratch3_control: require('../blocks/scratch3_control'),
     scratch3_event: require('../blocks/scratch3_event'),
     scratch3_looks: require('../blocks/scratch3_looks'),
     scratch3_motion: require('../blocks/scratch3_motion'),
