@@ -1,24 +1,21 @@
 const StringUtil = require('../util/string-util');
 const log = require('../util/log');
+const {loadSvgString, serializeSvgToString} = require('scratch-svg-renderer');
 
 const loadVector_ = function (costume, runtime, rotationCenter, optVersion) {
     return new Promise(resolve => {
         let svgString = costume.asset.decodeText();
         // SVG Renderer load fixes "quirks" associated with Scratch 2 projects
         if (optVersion === 2) {
-            if (runtime.v2SvgAdapter) {
-                runtime.v2SvgAdapter.loadString(svgString, true /* fromVersion2 */).then(() => {
-                    svgString = runtime.v2SvgAdapter.toString();
-                    // Put back into storage
-                    const storage = runtime.storage;
-                    costume.asset.encodeTextData(svgString, storage.DataFormat.SVG, true);
-                    costume.assetId = costume.asset.assetId;
-                    costume.md5 = `${costume.assetId}.${costume.dataFormat}`;
-                    resolve(svgString); // modified
-                });
-                return;
-            }
-            log.error('No V2 SVG adapter present; SVGs may not render correctly.');
+            return loadSvgString(svgString, true /* fromVersion2 */).then(svgTag => {
+                svgString = serializeSvgToString(svgTag, false);
+                // Put back into storage
+                const storage = runtime.storage;
+                costume.asset.encodeTextData(svgString, storage.DataFormat.SVG, true);
+                costume.assetId = costume.asset.assetId;
+                costume.md5 = `${costume.assetId}.${costume.dataFormat}`;
+                resolve(svgString); // modified
+            });
         }
         resolve(svgString); // unmodified
     }).then(svgString => new Promise(resolve => {
